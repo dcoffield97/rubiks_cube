@@ -1,0 +1,1 @@
+import rubiks_cube

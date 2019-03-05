@@ -1,4 +1,5 @@
 from idlelib import pyshell
+from importlib import reload
 from pathlib import Path
 import os
 

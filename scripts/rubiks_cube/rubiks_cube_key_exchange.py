@@ -29,6 +29,31 @@ def Get_Random_Hex(num_bytes):
 	
 	return random_hex
 
+def Get_Integer_From_Hex(hex):
+	integer = None
+	integer = int(hex, 16)
+	
+	return integer
+
+def Get_Char_From_Hex(hex):
+	char = ""
+	char = chr(Get_Integer_From_Hex(hex))
+	
+	return char
+
+def Get_Hex_From_Char(char):
+	hex = ""
+	hex = hex(ord(char))[2:]
+	
+	return hex
+
+def Get_Hex_Array_From_String(string):
+	hex_array = []
+	for char in list(string):
+		hex_array.append(Get_Hex_From_Char(char))
+	
+	return hex_array
+
 def Get_Byte_Array_From_Hex(hex):
 	byte_array = []
 	hex_list = list(hex)
@@ -48,26 +73,54 @@ def Get_New_Key(num_bytes = 56):
 	
 	return key
 
-def Get_Key_Mapped_To_Cube(key):
+def Get_Hex_Mapped_To_Cube(hex):
 	cube = {"TOP" : None,
 			"BOTTOM" : None,
 			"LEFT" : None,
 			"RIGHT" : None,
 			"FRONT" : None,
 			"BACK" : None}
-	key_byte_array = Get_Byte_Array_From_Hex(key)
-	key_bytes_index = 0
+	hex_byte_array = Get_Byte_Array_From_Hex(hex)
+	hex_bytes_index = 0
 	for side in cube:
 		cube[side] = []
 		for row in range(0, 3):
-			cube[side].append(key_byte_array[key_bytes_index:key_bytes_index + 3])
-			key_bytes_index = key_bytes_index + 3
+			cube[side].append(hex_byte_array[hex_bytes_index:hex_bytes_index + 3])
+			hex_bytes_index = hex_bytes_index + 3
 		
 	return cube
 
-def Get_Message_From_Cube(cube):
-	message = None
-	return message
+def Get_Hex_Array_From_Cube(cube):
+	cube_hex = []
+	for side in cube:
+		for row in cube[side]:
+			for block in row:
+				cube_hex.append(block)
+	
+	return cube_hex
+
+def Get_String_From_Hex_Array(hex_array):
+	string = ""
+	for hex in hex_array:
+		string = string + Get_Char_From_Hex(hex)
+	
+	return string
+
+def Get_String_From_Cube(cube):
+	string = ""
+	cube_hex = Get_Hex_Array_From_Cube(cube)
+	string = Get_String_From_Hex_Array(cube_hex)
+	
+	return string
+
+def Get_Message_Cipher(receiving_agent, message):
+	message_cipher = ""
+	message_hex_array = Get_Hex_Array_From_String(message)
+	public_key_hex_array = Get_Byte_Array_From_Hex(receiving_agent["PUBLIC_KEY"])
+	
+	
+	
+	return message_cipher
 
 def Trace_Key_Exchange():
 	alice, bob = Get_New_Agents(["Alice", "Bob"])

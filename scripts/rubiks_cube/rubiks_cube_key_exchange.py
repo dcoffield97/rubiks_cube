@@ -90,14 +90,14 @@ def Get_Hex_Mapped_To_Cube(hex):
 		
 	return cube
 
-def Get_Hex_Array_From_Cube(cube):
-	cube_hex = []
+def Get_Hex_From_Cube(cube):
+	hex = ""
 	for side in cube:
 		for row in cube[side]:
 			for block in row:
-				cube_hex.append(block)
+				hex = hex + block
 	
-	return cube_hex
+	return hex
 
 def Get_Hex_From_String(string):
 	hex = ""
@@ -212,7 +212,23 @@ def Get_Message_Cipher(public_key, message):
 	
 	return message_cipher
 
+def Get_Scrambled_Cipher_Cube(public_key, message, num_turns):
+	cipher_cube = None
+	message_cipher = Get_Message_Cipher(public_key, message)
+	cipher_cube = Get_Hex_Mapped_To_Cube(message_cipher)
+	cipher_cube = rubiks_cube.Get_Scrambled_Cube(cipher_cube, num_turns)
+	
+	return cipher_cube
+
+def Get_Unscrambled_Cipher_Cube(scrambled_cipher_cube):
+	unscrambled_cipher_cube = None
+	
+	return unscrambled_cipher_cube
+
+def Get_Decrypted_Cipher(private_key, cipher):
+	decrypted_cipher = None
+	
+	return decrypted_cipher
+
 def Trace_Key_Exchange():
 	alice, bob = Get_New_Agents(["Alice", "Bob"])
-	
-	

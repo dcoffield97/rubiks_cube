@@ -1,3 +1,5 @@
+import random
+
 def Get_Default_Cube():
     default_cube = {"TOP" : None,
                     "BOTTOM" : None,
@@ -368,6 +370,20 @@ def Get_Rubiks_Cube_Turns_List():
             rubiks_cube_turns_list.append(turn + "2'")
             
     return rubiks_cube_turns_list
+
+def Get_Scrambled_Cube(cube, num_turns):
+	scrambled_cube = {"CUBE" : cube,
+					  "TURNS_EXECUTED" : []}
+	cube_turns_list = Get_Rubiks_Cube_Turns_List()
+	num_turns_executed = 0
+	while num_turns_executed < num_turns:
+		random_turn_index = random.randint(0, len(0, len(cube_turns_list) - 1))
+		turn = cube_turns_list[random_turn_index]
+		scrambled_cube["CUBE"] = Get_Rotated_Cube_Using_Notation(scrambled_cube["CUBE"], turn)
+		scrambled_cube["TURNS_EXECUTED"].append(turn)
+		num_turns_executed = num_turns_executed + 1
+	
+	return scrambled_cube
 
 def Get_Rotated_Cube_Using_Notation(cube, move):
     rotated_cube = cube

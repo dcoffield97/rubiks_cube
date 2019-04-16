@@ -43,7 +43,7 @@ def Get_Char_From_Hex(hex):
 
 def Get_Hex_From_Char(char):
 	hex = ""
-	hex = hex(ord(char))[2:]
+	hex = format(ord(char), "x")
 	
 	return hex
 
@@ -65,7 +65,7 @@ def Get_Byte_Array_From_Hex(hex):
 	
 	return byte_array
 
-def Get_New_Key(num_bytes = 56):
+def Get_New_Key(num_bytes = 57):
 	key = ""
 	
 	for byte in range(0, num_bytes):
@@ -99,10 +99,18 @@ def Get_Hex_Array_From_Cube(cube):
 	
 	return cube_hex
 
-def Get_String_From_Hex_Array(hex_array):
+def Get_Hex_From_String(string):
+	hex = ""
+	hex = "".join(Get_Hex_Array_From_String(string))
+	
+	return hex
+
+def Get_String_From_Hex(hex):
 	string = ""
-	for hex in hex_array:
-		string = string + Get_Char_From_Hex(hex)
+	hex_byte_array = Get_Byte_Array_From_Hex(hex)
+	
+	for hex_byte in hex_byte_array:
+		string = string + Get_Char_From_Hex(hex_byte)
 	
 	return string
 
@@ -113,12 +121,94 @@ def Get_String_From_Cube(cube):
 	
 	return string
 
-def Get_Message_Cipher(receiving_agent, message):
+def Get_Binary_From_Hex(hex):
+	binary = ""
+	hex_array = list(hex)
+	hex_to_binary = {"0" : "0000", 
+					 "1" : "0001", 
+					 "2" : "0010", 
+					 "3" : "0011",
+					 "4" : "0100",
+					 "5" : "0101", 
+					 "6" : "0110", 
+					 "7" : "0111", 
+					 "8" : "1000", 
+					 "9" : "1001", 
+					 "A" : "1010",
+					 "B" : "1011",
+					 "C" : "1100",
+					 "D" : "1101",
+					 "E" : "1110", 
+					 "F" : "1111"}
+	
+	for hex_value in hex_array:
+		binary = binary + hex_to_binary[hex_value.upper()]
+		
+	return binary
+
+def Get_Hex_From_Binary(binary):
+	hex = ""
+	
+	binary_to_hex = {"0000" : "0", 
+					 "0001" : "1", 
+					 "0010" : "2", 
+					 "0011" : "3",
+					 "0100" : "4",
+					 "0101" : "5", 
+					 "0110" : "6", 
+					 "0111" : "7", 
+					 "1000" : "8", 
+					 "1001" : "9", 
+					 "1010" : "A",
+					 "1011" : "B",
+					 "1100" : "C",
+					 "1101" : "D",
+					 "1110" : "E", 
+					 "1111" : "F"}
+	
+	binary_index = 0
+	while binary_index < len(binary):
+		hex_value = binary_to_hex[binary[binary_index:binary_index + 4]]
+		hex = hex + hex_value
+		binary_index = binary_index + 4
+		
+	return hex
+
+def Get_Exclusive_Or_Of_Binary(first_binary, second_binary):
+	exclusive_or_of_binary = ""
+	
+	if len(first_binary) > len(second_binary):
+		first_binary_array = list(first_binary)
+		second_binary_array = list(second_binary.zfill(len(first_binary)))
+	else:
+		first_binary_array = list(first_binary.zfill(len(second_binary)))
+		second_binary_array = list(second_binary)
+	
+	binary_arrays_index = 0
+	for binary_arrays_index in range(0, len(first_binary_array)):
+		if first_binary_array[binary_arrays_index] != second_binary_array[binary_arrays_index]:
+			exclusive_or_of_bits = "1"
+		else:
+			exclusive_or_of_bits = "0"
+		exclusive_or_of_binary = exclusive_or_of_binary + exclusive_or_of_bits
+	
+	return exclusive_or_of_binary
+
+def Get_Exclusive_Or_Of_Hex(first_hex, second_hex):
+	exclusive_or_of_hex = ""
+	first_binary = Get_Binary_From_Hex(first_hex)
+	second_binary = Get_Binary_From_Hex(second_hex)
+	
+	exclusive_or_of_binary = Get_Exclusive_Or_Of_Binary(first_binary, second_binary)
+	exclusive_or_of_hex = Get_Hex_From_Binary(exclusive_or_of_binary)
+	
+	return exclusive_or_of_hex
+
+def Get_Message_Cipher(public_key, message):
 	message_cipher = ""
-	message_hex_array = Get_Hex_Array_From_String(message)
-	public_key_hex_array = Get_Byte_Array_From_Hex(receiving_agent["PUBLIC_KEY"])
 	
-	
+	hex_message = Get_Hex_From_String(message)
+	message_cipher = Get_Exclusive_Or_Of_Hex(public_key, hex_message)
 	
 	return message_cipher
 

@@ -3,9 +3,12 @@ import os
 import rubiks_cube
 
 def Get_New_Agent(agent_name):
+    agent = None
+    private_key = Get_New_Private_Key()
+    public_key = Get_New_Public_Key(private_key)
     agent = {"NAME" : agent_name,
-             "PUBLIC_KEY" : Get_New_Private_Key(),
-             "PRIVATE_KEY" : Get_New_Public_Key()} 
+             "PRIVATE_KEY" : private_key,
+             "PUBLIC_KEY" : public_key} 
              
     return agent
     

@@ -27,6 +27,23 @@ def Print_Cube_Side(cube_side, cube):
         elif isinstance(cube_side, str):
             print(cube_side)
 
+def Print_Cube(cube):
+    cube_string_rows = []
+    cube_string_rows.append(" "*9 + "".join(cube["TOP"][0]))
+    cube_string_rows.append(" "*9 + "".join(cube["TOP"][1]))
+    cube_string_rows.append(" "*9 + "".join(cube["TOP"][2]))
+    
+    cube_string_rows.append("".join(cube["LEFT"][0]) + "".join(cube["FRONT"][0]) + "".join(cube["RIGHT"][0]) + "".join(cube["BACK"][0]))
+    cube_string_rows.append("".join(cube["LEFT"][1]) + "".join(cube["FRONT"][1]) + "".join(cube["RIGHT"][1]) + "".join(cube["BACK"][1]))
+    cube_string_rows.append("".join(cube["LEFT"][2]) + "".join(cube["FRONT"][2]) + "".join(cube["RIGHT"][2]) + "".join(cube["BACK"][2]))
+    
+    cube_string_rows.append(" "*9 + "".join(cube["BOTTOM"][0]))
+    cube_string_rows.append(" "*9 + "".join(cube["BOTTOM"][1]))
+    cube_string_rows.append(" "*9 + "".join(cube["BOTTOM"][2]))
+    
+    for cube_string_row in cube_string_rows:
+        print(cube_string_row)
+    
 def Get_Default_Cube_Colors():
     default_colors = []
     color = {"NAME" : None,
@@ -356,11 +373,26 @@ def Get_Rotated_Cube(cube, what_to_rotate, what_to_rotate_index, rotation_direct
     
     return rotated_cube
 
+def Get_Rubiks_Cube_Face_Turn_List():
+    face_turn_list = ["U", "R", "F", "D", "L", "B"]
+    
+    return face_turn_list
+
+def Get_Rubiks_Cube_Double_Layer_Turn_List():
+    double_layer_turn_list = ["u", "r", "f", "d", "l", "b"]
+    
+    return double_layer_turn_list
+
+def Get_Rubiks_Cube_Middle_Layer_Turn_List():
+    middle_layer_turn_list = ["M", "E", "S"]
+    
+    return middle_layer_turn_list
+
 def Get_Rubiks_Cube_Turns_List():
     rubiks_cube_turns_list = []
-    face_turn_list = ["U", "R", "F", "D", "L", "B"]
-    double_layer_turn_list = ["u", "r", "f", "d", "l", "b"]
-    middle_layer_turn_list = ["M", "E", "S"]
+    face_turn_list = Get_Rubiks_Cube_Face_Turn_List()
+    double_layer_turn_list = Get_Rubiks_Cube_Double_Layer_Turn_List()
+    middle_layer_turn_list = Get_Rubiks_Cube_Middle_Layer_Turn_List()
     
     for turn_list in [face_turn_list, double_layer_turn_list, middle_layer_turn_list]:
         for turn in turn_list:
@@ -400,6 +432,13 @@ def Get_Unscrambled_Cube_Using_Turns_Executed_List(scrambled_cube, turns_execute
     unscrambled_cube = cube
     
     return unscrambled_cube
+
+def Get_Cube_With_Turns_Executed(cube, turns_list):
+    cube_with_turns_executed = cube
+    for turn in turns_list:
+        cube_with_turns_executed = Get_Rotated_Cube_Using_Notation(cube_with_turns_executed, turn)
+    
+    return cube_with_turns_executed
 
 def Get_Rotated_Cube_Using_Notation(cube, move):
     rotated_cube = cube

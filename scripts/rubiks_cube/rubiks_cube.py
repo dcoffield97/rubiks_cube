@@ -32,7 +32,7 @@ def Get_Default_Cube_Colors():
     color = {"NAME" : None,
              "STR_ID" : None,
              "INT_ID" : None}
-    color_names = ["WHITE", "BLUE", "ORANGE", "RED", "GREEN", "YELLOW"]
+    color_names = ["RED", "ORANGE", "BLUE", "GREEN", "WHITE", "YELLOW"]
     color_index = 0
     for color_name in color_names:
         color = {"NAME" : color_name,
@@ -385,6 +385,22 @@ def Get_Scrambled_Cube(cube, num_turns):
     
     return scrambled_cube
 
+def Get_Unscrambled_Cube_Using_Turns_Executed_List(scrambled_cube, turns_executed_list):
+    unscrambled_cube = None
+    cube = scrambled_cube
+    turn_index = len(turns_executed_list) - 1
+    while turn_index >= 0:
+        turn = turns_executed_list[turn_index]
+        if "'" in turn:
+            move = turn.replace("'", "")
+        else:
+            move = turn + "'"
+        cube = Get_Rotated_Cube_Using_Notation(cube, move)
+        turn_index = turn_index - 1
+    unscrambled_cube = cube
+    
+    return unscrambled_cube
+
 def Get_Rotated_Cube_Using_Notation(cube, move):
     rotated_cube = cube
     if move in Get_Rubiks_Cube_Turns_List():
@@ -394,12 +410,14 @@ def Get_Rotated_Cube_Using_Notation(cube, move):
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 2, "UP", "FRONT")
         elif move == "F":
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 2, "UP", "LEFT")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "RIGHT")
         elif move == "D":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 2, "RIGHT", "FRONT")
         elif move == "L":
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 0, "DOWN", "FRONT")
         elif move == "B":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 0, "LEFT", "TOP")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "BOTTOM")
         
         elif move == "U'":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 0, "RIGHT", "FRONT")
@@ -407,12 +425,14 @@ def Get_Rotated_Cube_Using_Notation(cube, move):
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 2, "DOWN", "FRONT")
         elif move == "F'":
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 2, "DOWN", "LEFT")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "RIGHT")
         elif move == "D'":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 2, "LEFT", "FRONT")
         elif move == "L'":
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 0, "UP", "FRONT")
         elif move == "B'":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 0, "RIGHT", "TOP")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "BOTTOM")
         
         elif move == "u":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 0, "LEFT", "FRONT")
@@ -422,7 +442,9 @@ def Get_Rotated_Cube_Using_Notation(cube, move):
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 1, "UP", "FRONT")
         elif move == "f":
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 2, "UP", "LEFT")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "RIGHT")
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 1, "UP", "LEFT")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "RIGHT")
         elif move == "d":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 2, "RIGHT", "FRONT")
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 1, "RIGHT", "FRONT")
@@ -431,7 +453,9 @@ def Get_Rotated_Cube_Using_Notation(cube, move):
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 1, "DOWN", "FRONT")
         elif move == "b":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 0, "LEFT", "TOP")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "BOTTOM")
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 1, "LEFT", "TOP")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "BOTTOM")
         
         elif move == "u'":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 0, "RIGHT", "FRONT")
@@ -441,7 +465,9 @@ def Get_Rotated_Cube_Using_Notation(cube, move):
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 1, "DOWN", "FRONT")
         elif move == "f'":
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 2, "DOWN", "LEFT")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "RIGHT")
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 1, "DOWN", "LEFT")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "RIGHT")
         elif move == "d'":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 2, "LEFT", "FRONT")
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 1, "LEFT", "FRONT")
@@ -450,7 +476,9 @@ def Get_Rotated_Cube_Using_Notation(cube, move):
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 1, "UP", "FRONT")
         elif move == "b'":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 0, "RIGHT", "TOP")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "BOTTOM")
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 1, "RIGHT", "TOP")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "BOTTOM")
         
         elif move == "M":
             rotated_cube = Get_Rotated_Cube(cube, "COLUMN", 1, "DOWN", "FRONT")
@@ -462,8 +490,10 @@ def Get_Rotated_Cube_Using_Notation(cube, move):
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 1, "LEFT", "FRONT")
         elif move == "S":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 1, "RIGHT", "TOP")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "BOTTOM")
         elif move == "S'":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 1, "LEFT", "TOP")
+            rotated_cube = Get_Cube_In_Perspective(rotated_cube, "BOTTOM")
         
         elif move == "x":
             rotated_cube = Get_Cube_In_Perspective(cube, "BOTTOM")

@@ -284,22 +284,22 @@ def Get_Rotated_Cube(cube, what_to_rotate, what_to_rotate_index, rotation_direct
                                             [cube["BACK"][1][0]] + [cube["TOP"][1][1]] + [cube["BACK"][1][2]],
                                             [cube["BACK"][2][0]] + [cube["TOP"][2][1]] + [cube["BACK"][2][2]]]
                 elif what_to_rotate_index == 2:
-                    rotated_cube["TOP"] = [cube["TOP"][0][:-1] + cube["FRONT"][0][2],
-                                           cube["TOP"][1][:-1] + cube["FRONT"][1][2],
-                                           cube["TOP"][2][:-1] + cube["FRONT"][2][2]]
-                    rotated_cube["BOTTOM"] = [cube["BOTTOM"][0][:-1] + cube["BACK"][0][2],
-                                              cube["BOTTOM"][1][:-1] + cube["BACK"][1][2],
-                                              cube["BOTTOM"][2][:-1] + cube["BACK"][2][2]]
+                    rotated_cube["TOP"] = [cube["TOP"][0][:-1] + [cube["FRONT"][0][2]],
+                                           cube["TOP"][1][:-1] + [cube["FRONT"][1][2]],
+                                           cube["TOP"][2][:-1] + [cube["FRONT"][2][2]]]
+                    rotated_cube["BOTTOM"] = [cube["BOTTOM"][0][:-1] + [cube["BACK"][0][2]],
+                                              cube["BOTTOM"][1][:-1] + [cube["BACK"][1][2]],
+                                              cube["BOTTOM"][2][:-1] + [cube["BACK"][2][2]]]
                     rotated_cube["LEFT"] = cube["LEFT"]
                     rotated_cube["RIGHT"] = [[cube["RIGHT"][2][0]] + [cube["RIGHT"][1][0]] + [cube["RIGHT"][0][0]],
                                              [cube["RIGHT"][2][1]] + [cube["RIGHT"][1][1]] + [cube["RIGHT"][0][1]],
                                              [cube["RIGHT"][2][2]] + [cube["RIGHT"][1][2]] + [cube["RIGHT"][0][2]]]
-                    rotated_cube["FRONT"] = [cube["FRONT"][0][:-1] + cube["BOTTOM"][0][2],
-                                             cube["FRONT"][1][:-1] + cube["BOTTOM"][1][2],
-                                             cube["FRONT"][2][:-1] + cube["BOTTOM"][2][2]]
-                    rotated_cube["BACK"] = [cube["BACK"][0][:-1] + cube["TOP"][0][2],
-                                            cube["BACK"][1][:-1] + cube["TOP"][1][2],
-                                            cube["BACK"][2][:-1] + cube["TOP"][2][2]]
+                    rotated_cube["FRONT"] = [cube["FRONT"][0][:-1] + [cube["BOTTOM"][0][2]],
+                                             cube["FRONT"][1][:-1] + [cube["BOTTOM"][1][2]],
+                                             cube["FRONT"][2][:-1] + [cube["BOTTOM"][2][2]]]
+                    rotated_cube["BACK"] = [cube["BACK"][0][:-1] + [cube["TOP"][0][2]],
+                                            cube["BACK"][1][:-1] + [cube["TOP"][1][2]],
+                                            cube["BACK"][2][:-1] + [cube["TOP"][2][2]]]
                 
             elif rotation_direction.upper() == "DOWN":
                 if what_to_rotate_index == 0:
@@ -335,22 +335,22 @@ def Get_Rotated_Cube(cube, what_to_rotate, what_to_rotate_index, rotation_direct
                                             [cube["BACK"][1][0]] + [cube["BOTTOM"][1][1]] + [cube["BACK"][1][2]],
                                             [cube["BACK"][2][0]] + [cube["BOTTOM"][2][1]] + [cube["BACK"][2][2]]]
                 elif what_to_rotate_index == 2:
-                    rotated_cube["TOP"] = [cube["TOP"][0][:-1] + cube["BACK"][0][2],
-                                           cube["TOP"][1][:-1] + cube["BACK"][1][2],
-                                           cube["TOP"][2][:-1] + cube["BACK"][2][2]]
-                    rotated_cube["BOTTOM"] = [cube["BOTTOM"][0][:-1] + cube["FRONT"][0][2],
-                                              cube["BOTTOM"][1][:-1] + cube["FRONT"][1][2],
-                                              cube["BOTTOM"][2][:-1] + cube["FRONT"][2][2]]
+                    rotated_cube["TOP"] = [cube["TOP"][0][:-1] + [cube["BACK"][0][2]],
+                                           cube["TOP"][1][:-1] + [cube["BACK"][1][2]],
+                                           cube["TOP"][2][:-1] + [cube["BACK"][2][2]]]
+                    rotated_cube["BOTTOM"] = [cube["BOTTOM"][0][:-1] + [cube["FRONT"][0][2]],
+                                              cube["BOTTOM"][1][:-1] + [cube["FRONT"][1][2]],
+                                              cube["BOTTOM"][2][:-1] + [cube["FRONT"][2][2]]]
                     rotated_cube["LEFT"] = cube["LEFT"]
                     rotated_cube["RIGHT"] = [[cube["RIGHT"][0][2]] + [cube["RIGHT"][1][2]] + [cube["RIGHT"][2][2]],
                                              [cube["RIGHT"][0][1]] + [cube["RIGHT"][1][1]] + [cube["RIGHT"][2][1]],
                                              [cube["RIGHT"][0][0]] + [cube["RIGHT"][1][0]] + [cube["RIGHT"][2][0]]]
-                    rotated_cube["FRONT"] = [cube["FRONT"][0][:-1] + cube["TOP"][0][2],
-                                             cube["FRONT"][1][:-1] + cube["TOP"][1][2],
-                                             cube["FRONT"][2][:-1] + cube["TOP"][2][2]]
-                    rotated_cube["BACK"] = [cube["BACK"][0][:-1] + cube["BOTTOM"][0][2],
-                                            cube["BACK"][1][:-1] + cube["BOTTOM"][1][2],
-                                            cube["BACK"][2][:-1] + cube["BOTTOM"][2][2]]
+                    rotated_cube["FRONT"] = [cube["FRONT"][0][:-1] + [cube["TOP"][0][2]],
+                                             cube["FRONT"][1][:-1] + [cube["TOP"][1][2]],
+                                             cube["FRONT"][2][:-1] + [cube["TOP"][2][2]]]
+                    rotated_cube["BACK"] = [cube["BACK"][0][:-1] + [cube["BOTTOM"][0][2]],
+                                            cube["BACK"][1][:-1] + [cube["BOTTOM"][1][2]],
+                                            cube["BACK"][2][:-1] + [cube["BOTTOM"][2][2]]]
     else:
         Print_Invalid_Parameters_Message()
     
@@ -372,18 +372,18 @@ def Get_Rubiks_Cube_Turns_List():
     return rubiks_cube_turns_list
 
 def Get_Scrambled_Cube(cube, num_turns):
-	scrambled_cube = {"CUBE" : cube,
-					  "TURNS_EXECUTED" : []}
-	cube_turns_list = Get_Rubiks_Cube_Turns_List()
-	num_turns_executed = 0
-	while num_turns_executed < num_turns:
-		random_turn_index = random.randint(0, len(0, len(cube_turns_list) - 1))
-		turn = cube_turns_list[random_turn_index]
-		scrambled_cube["CUBE"] = Get_Rotated_Cube_Using_Notation(scrambled_cube["CUBE"], turn)
-		scrambled_cube["TURNS_EXECUTED"].append(turn)
-		num_turns_executed = num_turns_executed + 1
-	
-	return scrambled_cube
+    scrambled_cube = {"CUBE" : cube,
+                      "TURNS_EXECUTED" : []}
+    cube_turns_list = Get_Rubiks_Cube_Turns_List()
+    num_turns_executed = 0
+    while num_turns_executed < num_turns:
+        random_turn_index = random.randint(0, len(cube_turns_list) - 1)
+        turn = cube_turns_list[random_turn_index]
+        scrambled_cube["CUBE"] = Get_Rotated_Cube_Using_Notation(scrambled_cube["CUBE"], turn)
+        scrambled_cube["TURNS_EXECUTED"].append(turn)
+        num_turns_executed = num_turns_executed + 1
+    
+    return scrambled_cube
 
 def Get_Rotated_Cube_Using_Notation(cube, move):
     rotated_cube = cube

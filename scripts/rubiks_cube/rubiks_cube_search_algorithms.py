@@ -1,26 +1,17 @@
 import rubiks_cube
 
-def Get_String_From_Cube(cube):
-    string = ""
-    for side in cube:
-        for row in cube[side]:
-            for block in row:
-                string = string + block
-    
-    return string
-
 def Get_Cube_Array_As_String_Array(cube_array):
     string_array = []
     for cube in cube_array:
-        cube_string = Get_String_From_Cube(cube)
+        cube_string = rubiks_cube.Get_String_From_Cube(cube)
         string_array.append(cube_string)
     
     return string_array
 
 def Get_If_Rubiks_Cubes_Equivalent(first_cube, second_cube):
     rubiks_cubes_equivalent = False
-    first_cube_string_format = Get_String_From_Cube(first_cube)
-    second_cube_string_format = Get_String_From_Cube(second_cube)
+    first_cube_string_format = rubiks_cube.Get_String_From_Cube(first_cube)
+    second_cube_string_format = rubiks_cube.Get_String_From_Cube(second_cube)
     
     if first_cube_string_format == second_cube_string_format:
         rubiks_cubes_equivalent = True

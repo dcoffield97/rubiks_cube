@@ -106,14 +106,20 @@ def Get_Cube_Side_Table(cube_side):
     
     return cube_side_table
 
+def Get_String_From_Cube(cube):
+    string = ""
+    for side in cube:
+        for row in cube[side]:
+            for block in row:
+                string = string + block
+    
+    return string
+
 def Is_Cube_Completed(cube):
-    is_cube_completed = True
-    for cube_side in cube:
-        for cube_row in cube[cube_side]:
-            for cube_block in cube_row:
-                if cube_block != cube_row[0]:
-                    is_cube_completed = False
-                    break
+    is_cube_completed = False
+    
+    if Get_String_From_Cube(cube) == Get_String_From_Cube(Get_Default_Cube()):
+        is_cube_completed = True
     
     return is_cube_completed
 

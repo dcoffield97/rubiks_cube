@@ -404,7 +404,7 @@ def Get_Rubiks_Cube_Turns_List():
     return rubiks_cube_turns_list
 
 def Get_Scrambled_Cube(cube, num_turns):
-    scrambled_cube = {"CUBE" : cube,
+    scrambled_cube = {"CUBE" : cube.copy(),
                       "TURNS_EXECUTED" : []}
     cube_turns_list = Get_Rubiks_Cube_Turns_List()
     num_turns_executed = 0
@@ -419,7 +419,7 @@ def Get_Scrambled_Cube(cube, num_turns):
 
 def Get_Unscrambled_Cube_Using_Turns_Executed_List(scrambled_cube, turns_executed_list):
     unscrambled_cube = None
-    cube = scrambled_cube
+    cube = scrambled_cube.copy()
     turn_index = len(turns_executed_list) - 1
     while turn_index >= 0:
         turn = turns_executed_list[turn_index]
@@ -434,14 +434,14 @@ def Get_Unscrambled_Cube_Using_Turns_Executed_List(scrambled_cube, turns_execute
     return unscrambled_cube
 
 def Get_Cube_With_Turns_Executed(cube, turns_list):
-    cube_with_turns_executed = cube
+    cube_with_turns_executed = cube.copy()
     for turn in turns_list:
         cube_with_turns_executed = Get_Rotated_Cube_Using_Notation(cube_with_turns_executed, turn)
     
     return cube_with_turns_executed
 
 def Get_Rotated_Cube_Using_Notation(cube, move):
-    rotated_cube = cube
+    rotated_cube = cube.copy()
     if move in Get_Rubiks_Cube_Turns_List():
         if move == "U":
             rotated_cube = Get_Rotated_Cube(cube, "ROW", 0, "LEFT", "FRONT")

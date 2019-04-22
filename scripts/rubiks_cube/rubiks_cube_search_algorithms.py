@@ -22,11 +22,12 @@ def Get_New_Rubiks_Cube_Search_Tree():
     cube_search_tree = {}
     default_cube = rubiks_cube.Get_Default_Cube()
     scrambled_cube = rubiks_cube.Get_Scrambled_Cube(default_cube.copy(), 1)["CUBE"]
+    turn_options = rubiks_cube.Get_Rubiks_Cube_Face_Turn_List()
     
     cube_search_tree = {"CURRENT_CUBE" : scrambled_cube.copy(),
                         "ROOT_CUBE" : scrambled_cube.copy(),
                         "GOAL_CUBE" : default_cube.copy(),
-                        "TURN_OPTIONS" : rubiks_cube.Get_Rubiks_Cube_Turns_List(),
+                        "TURN_OPTIONS" : turn_options.copy(),
                         "OPEN_STATES" : [],
                         "CLOSED_STATES" : [],
                         "FINAL_PATH" : [],
@@ -55,9 +56,9 @@ def Get_Updated_Cube_Breadth_First_Search_Tree(cube_search_tree):
     return updated_cube_search_tree
 
 def Trace_Rubiks_Cube_Breadth_First_Search():
-    cube_search_tree = Get_New_Rubiks_Cube_Search_Tree().copy()
+    cube_search_tree = Get_New_Rubiks_Cube_Search_Tree()
     while Get_If_Rubiks_Cubes_Equivalent(cube_search_tree["CURRENT_CUBE"], cube_search_tree["GOAL_CUBE"]) != True:
-        cube_search_tree = Get_Updated_Cube_Breadth_First_Search_Tree(cube_search_tree).copy()
+        cube_search_tree = Get_Updated_Cube_Breadth_First_Search_Tree(cube_search_tree.copy())
     print(rubiks_cube.Print_Cube(cube_search_tree["ROOT_CUBE"]))
     print(rubiks_cube.Print_Cube(cube_search_tree["CURRENT_CUBE"]))
     print("------------------------------")

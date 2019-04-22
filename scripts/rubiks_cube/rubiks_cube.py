@@ -115,6 +115,24 @@ def Get_String_From_Cube(cube):
     
     return string
 
+def Get_Cube_From_String(string):
+    cube = {"TOP" : None,
+            "BOTTOM" : None,
+            "LEFT" : None,
+            "RIGHT" : None,
+            "FRONT" : None,
+            "BACK" : None}
+    string = string.replace("][", "],[")
+    string_array = string.split(",")
+    cube["TOP"] = [string_array[0:3]] + [string_array[3:6]] + [string_array[6:9]]
+    cube["BOTTOM"] = [string_array[9:12]] + [string_array[12:15]] + [string_array[15:18]]
+    cube["LEFT"] = [string_array[18:21]] + [string_array[21:24]] + [string_array[24:27]]
+    cube["RIGHT"] = [string_array[27:30]] + [string_array[30:33]] + [string_array[33:36]]
+    cube["FRONT"] = [string_array[36:39]] + [string_array[39:42]] + [string_array[42:45]]
+    cube["BACK"] = [string_array[45:48]] + [string_array[48:51]] + [string_array[51:54]]
+    
+    return cube
+    
 def Is_Cube_Completed(cube):
     is_cube_completed = False
     

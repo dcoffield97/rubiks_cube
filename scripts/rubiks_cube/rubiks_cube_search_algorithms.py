@@ -107,8 +107,10 @@ def Trace_Rubiks_Cube_Breadth_First_Search():
     rubiks_cube.Print_Cube(cube_search_tree["CURRENT_CUBE"])
     print("\n")
     print("------------------------------")
-    print("Path Cost:\t" + str(cube_search_tree["PATH_COST"]))
-    print("Execution Time:\t" + str(end_time - start_time))
+    path_cost = str(cube_search_tree["PATH_COST"])
+    print("Path Cost:\t" + path_cost)
+    execution_time = str(end_time - start_time)
+    print("Execution Time:\t" + execution_time)
 
 def Trace_Rubiks_Cube_Bidirectional_Search():
     start_time = time.time()
@@ -126,5 +128,13 @@ def Trace_Rubiks_Cube_Bidirectional_Search():
     rubiks_cube.Print_Cube(scrambled_cube_search_tree["CURRENT_CUBE"])
     print("\n")
     print("------------------------------")
-    print("Path Cost:\t" + str(scrambled_cube_search_tree["PATH_COST"] + default_cube_search_tree["PATH_COST"]))
-    print("Execution Time:\t" + str(end_time - start_time))
+    path_cost = str(scrambled_cube_search_tree["PATH_COST"] + default_cube_search_tree["PATH_COST"])
+    print("Path Cost:\t" + path_cost)
+    execution_time = str(end_time - start_time)
+    print("Execution Time:\t" + execution_time)
+    
+    return path_cost, execution_time
+
+def Trace_Performance_Comparison_Of_Breadth_First_And_Bidirectional_Search():
+    bfs_path_cost, bfs_execution_time = Trace_Rubiks_Cube_Breadth_First_Search()
+    bis_path_cost, bis_execution_time = Trace_Rubiks_Cube_Bidirectional_Search()

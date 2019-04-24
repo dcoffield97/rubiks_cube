@@ -19,12 +19,13 @@ def Get_If_Rubiks_Cubes_Equivalent(first_cube, second_cube):
     
     return rubiks_cubes_equivalent
 
-def Get_New_Rubiks_Cube_Search_Tree():
+def Get_New_Rubiks_Cube_Search_Tree(scrambled_cube_with_turns_executed = None):
     cube_search_tree = {}
     default_cube = rubiks_cube.Get_Default_Cube()
-    scrambled_cube_with_turns_exectuted = rubiks_cube.Get_Scrambled_Cube(default_cube.copy(), 4)
-    scrambled_cube = scrambled_cube_with_turns_exectuted["CUBE"]
-    scramble_turns = scrambled_cube_with_turns_exectuted["TURNS_EXECUTED"]
+    if scrambled_cube_with_turns_executed == None:
+        scrambled_cube_with_turns_executed = rubiks_cube.Get_Scrambled_Cube(default_cube.copy(), 2)
+    scrambled_cube = scrambled_cube_with_turns_executed["CUBE"]
+    scramble_turns = scrambled_cube_with_turns_executed["TURNS_EXECUTED"]
     turn_options = rubiks_cube.Get_Rubiks_Cube_Turns_List()
     
     cube_search_tree = {"CURRENT_CUBE" : scrambled_cube.copy(),
@@ -75,6 +76,16 @@ def Get_Children_Of_Current_Cube(cube_search_tree):
     
     return children
 
+def Get_Updated_Cube_Depth_First_Search_Tree(cube_search_tree):
+    updated_cube_search_tree = cube_search_tree
+    
+    updated_cube_search_tree["OPEN_STATES"] = updated_cube_search_tree["OPEN_STATES"] + Get_Children_Of_Current_Cube(updated_cube_search_tree)
+    updated_cube_search_tree["CLOSED_STATES"].append(rubiks_cube.Get_String_From_Cube(updated_cube_search_tree["CURRENT_CUBE"]))
+    updated_cube_search_tree["CURRENT_CUBE"] = rubiks_cube.Get_Cube_From_String(updated_cube_search_tree["OPEN_STATES"].pop(-1))
+    updated_cube_search_tree["PATH_COST"] = updated_cube_search_tree["PATH_COST"] + 1
+    
+    return updated_cube_search_tree
+
 def Get_Updated_Cube_Breadth_First_Search_Tree(cube_search_tree):
     updated_cube_search_tree = cube_search_tree
     
@@ -94,9 +105,32 @@ def Get_Updated_Cube_Bidirectional_Search_Tree(scrambled_cube_search_tree, defau
     
     return updated_scrambled_cube_search_tree, updated_default_cube_search_tree
 
-def Trace_Rubiks_Cube_Breadth_First_Search():
+def Trace_Rubiks_Cube_Depth_First_Search(scrambled_cube_with_turns_executed = None):
+    print("Depth First Search:")
     start_time = time.time()
-    cube_search_tree = Get_New_Rubiks_Cube_Search_Tree()
+    cube_search_tree = Get_New_Rubiks_Cube_Search_Tree(scrambled_cube_with_turns_executed)
+    while Get_If_Rubiks_Cubes_Equivalent(cube_search_tree["CURRENT_CUBE"], cube_search_tree["GOAL_CUBE"]) != True:
+        cube_search_tree = Get_Updated_Cube_Depth_First_Search_Tree(cube_search_tree.copy())
+    end_time = time.time()
+    rubiks_cube.Print_Cube(cube_search_tree["ROOT_CUBE"])
+    print("\n")
+    print("Turns Used to Scramble:\t" + str(cube_search_tree["ROOT_CUBE_TURNS_EXECUTED"]))
+    print("\n")
+    rubiks_cube.Print_Cube(cube_search_tree["CURRENT_CUBE"])
+    print("\n")
+    print("------------------------------")
+    path_cost = str(cube_search_tree["PATH_COST"])
+    print("Path Cost:\t" + path_cost)
+    execution_time = str(end_time - start_time)
+    print("Execution Time:\t" + execution_time)
+    print("------------------------------")
+    
+    return path_cost, execution_time
+
+def Trace_Rubiks_Cube_Breadth_First_Search(scrambled_cube_with_turns_executed = None):
+    print("Breadth First Search:")
+    start_time = time.time()
+    cube_search_tree = Get_New_Rubiks_Cube_Search_Tree(scrambled_cube_with_turns_executed)
     while Get_If_Rubiks_Cubes_Equivalent(cube_search_tree["CURRENT_CUBE"], cube_search_tree["GOAL_CUBE"]) != True:
         cube_search_tree = Get_Updated_Cube_Breadth_First_Search_Tree(cube_search_tree.copy())
     end_time = time.time()
@@ -111,10 +145,14 @@ def Trace_Rubiks_Cube_Breadth_First_Search():
     print("Path Cost:\t" + path_cost)
     execution_time = str(end_time - start_time)
     print("Execution Time:\t" + execution_time)
+    print("------------------------------")
+    
+    return path_cost, execution_time
 
-def Trace_Rubiks_Cube_Bidirectional_Search():
+def Trace_Rubiks_Cube_Bidirectional_Search(scrambled_cube_with_turns_executed = None):
+    print("Bidirectional Search:")
     start_time = time.time()
-    scrambled_cube_search_tree = Get_New_Rubiks_Cube_Search_Tree()
+    scrambled_cube_search_tree = Get_New_Rubiks_Cube_Search_Tree(scrambled_cube_with_turns_executed)
     default_cube_search_tree = Get_Default_Rubiks_Cube_Search_Tree()
     default_cube_search_tree["GOAL_STATE"] = scrambled_cube_search_tree["ROOT_CUBE"]
     while Get_If_Rubiks_Cube_Search_Trees_Intersect(scrambled_cube_search_tree, default_cube_search_tree) != True:
@@ -132,9 +170,13 @@ def Trace_Rubiks_Cube_Bidirectional_Search():
     print("Path Cost:\t" + path_cost)
     execution_time = str(end_time - start_time)
     print("Execution Time:\t" + execution_time)
+    print("------------------------------")
     
     return path_cost, execution_time
 
-def Trace_Performance_Comparison_Of_Breadth_First_And_Bidirectional_Search():
-    bfs_path_cost, bfs_execution_time = Trace_Rubiks_Cube_Breadth_First_Search()
-    bis_path_cost, bis_execution_time = Trace_Rubiks_Cube_Bidirectional_Search()
+def Trace_Performance_Comparison_Search_Algorithms():
+    default_cube = rubiks_cube.Get_Default_Cube()
+    scrambled_cube_with_turns_executed = rubiks_cube.Get_Scrambled_Cube(default_cube.copy(), 1)
+    bfs_path_cost, bfs_execution_time = Trace_Rubiks_Cube_Breadth_First_Search(scrambled_cube_with_turns_executed.copy())
+    bis_path_cost, bis_execution_time = Trace_Rubiks_Cube_Bidirectional_Search(scrambled_cube_with_turns_executed.copy())
+    dfs_path_cost, dfs_execution_time = Trace_Rubiks_Cube_Depth_First_Search(scrambled_cube_with_turns_executed.copy())

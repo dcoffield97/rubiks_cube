@@ -28,7 +28,7 @@ def Get_Random_Integer(num_bytes):
 
 def Get_Random_Hex(num_bytes):
     random_hex = None
-    random_hex = hex(Get_Random_Integer(num_bytes))[2:]
+    random_hex = hex(Get_Random_Integer(num_bytes))[2:].zfill(2)
     
     return random_hex
 
@@ -37,6 +37,12 @@ def Get_Integer_From_Hex(hex):
     integer = int(hex, 16)
     
     return integer
+
+def Get_Hex_From_Integer(integer):
+    hex_value = ""
+    hex_value = hex(integer)[2:]
+   
+    return hex_value
 
 def Get_Char_From_Hex(hex):
     char = ""
@@ -73,11 +79,15 @@ def Get_New_Private_Key(num_bytes = 57):
     
     for byte in range(0, num_bytes):
         private_key = private_key + Get_Random_Hex(num_bytes)
-    
     return private_key
+
 
 def Get_New_Public_Key(private_key):
     public_key = ""
+    
+    private_key_cube = Get_Hex_Mapped_To_Cube(private_key)
+    public_key_cube = rubiks_cube.Get_Scrambled_Cube(private_key_cube, 20)["CUBE"]
+    public_key = Get_Hex_From_Cube(public_key_cube)
     
     return public_key
 
@@ -217,26 +227,33 @@ def Get_Message_Cipher(public_key, message):
     
     hex_message = Get_Hex_From_String(message)
     message_cipher = Get_Exclusive_Or_Of_Hex(public_key, hex_message)
-    
+
     return message_cipher
 
-def Get_Scrambled_Cipher_Cube(public_key, message, num_turns):
-    cipher_cube = None
-    message_cipher = Get_Message_Cipher(public_key, message)
-    cipher_cube = Get_Hex_Mapped_To_Cube(message_cipher)
-    cipher_cube = rubiks_cube.Get_Scrambled_Cube(cipher_cube, num_turns)
-    
-    return cipher_cube
-
-def Get_Unscrambled_Cipher_Cube(scrambled_cipher_cube):
-    unscrambled_cipher_cube = None
-    
-    return unscrambled_cipher_cube
-
-def Get_Decrypted_Cipher(private_key, cipher):
-    decrypted_cipher = None
+def Get_Decrypted_Cipher(message_cipher, public_key, private_key):
+    decrypted_cipher = ""
+    xorp = Get_Exclusive_Or_Of_Hex(public_key, private_key)
+    decrypted_cipher = Get_String_From_Hex(Get_Exclusive_Or_Of_Hex(Get_Exclusive_Or_Of_Hex(message_cipher, private_key), xorp)).replace("\x00", "")
     
     return decrypted_cipher
 
+
 def Trace_Key_Exchange():
     alice, bob = Get_New_Agents(["Alice", "Bob"])
+    
+    message = "Woooooo"
+    print("Message: " + message + "\n")
+    
+    private_key = bob["PRIVATE_KEY"]
+    public_key = bob["PUBLIC_KEY"]
+    
+    print("Private Key: " + private_key + "\n")
+    
+    print("Public Key: " + public_key + "\n")
+    
+    message_cipher = Get_Message_Cipher(public_key, message)
+    print("Message Cipher: " + message_cipher + "\n")
+    
+    decrypted_cipher = Get_Decrypted_Cipher(message_cipher, public_key, private_key)
+    print("Decrypted Message: " + decrypted_cipher)
+    

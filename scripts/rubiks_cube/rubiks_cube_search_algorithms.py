@@ -1,24 +1,30 @@
 import rubiks_cube
 import time
 
+#Function makes the cube array into a string array
 def Get_Cube_Array_As_String_Array(cube_array):
     string_array = []
+    #gets into the cube array and uses the function to get the string array
     for cube in cube_array:
         cube_string = rubiks_cube.Get_String_From_Cube(cube)
         string_array.append(cube_string)
     
     return string_array
 
+#Function checks if the cubes are the same
 def Get_If_Rubiks_Cubes_Equivalent(first_cube, second_cube):
-    rubiks_cubes_equivalent = False
+    rubiks_cubes_equivalent = False #starts off as false to be compared and determined if true
+    #assigning and calling functions of the first cube and the second cube
     first_cube_string_format = rubiks_cube.Get_String_From_Cube(first_cube)
     second_cube_string_format = rubiks_cube.Get_String_From_Cube(second_cube)
     
+    #comparing each cube to determine if they are the same
     if first_cube_string_format == second_cube_string_format:
         rubiks_cubes_equivalent = True
     
     return rubiks_cubes_equivalent
 
+#Function gets a new cube from a searching the turn lists, scrambled and default cubes
 def Get_New_Rubiks_Cube_Search_Tree(scrambled_cube_with_turns_executed = None):
     cube_search_tree = {}
     default_cube = rubiks_cube.Get_Default_Cube()
@@ -28,6 +34,7 @@ def Get_New_Rubiks_Cube_Search_Tree(scrambled_cube_with_turns_executed = None):
     scramble_turns = scrambled_cube_with_turns_executed["TURNS_EXECUTED"]
     turn_options = rubiks_cube.Get_Rubiks_Cube_Turns_List()
     
+    #assigning each variable to a state or cube
     cube_search_tree = {"CURRENT_CUBE" : scrambled_cube.copy(),
                         "ROOT_CUBE" : scrambled_cube.copy(),
                         "ROOT_CUBE_TURNS_EXECUTED" : scramble_turns,
@@ -65,6 +72,7 @@ def Get_If_Rubiks_Cube_Search_Trees_Intersect(first_search_tree, second_search_t
     
     return trees_intersect
 
+#Functions uses the search tree to get the children of the current cube
 def Get_Children_Of_Current_Cube(cube_search_tree):
     children = []
     parent = cube_search_tree["CURRENT_CUBE"].copy()
@@ -86,6 +94,7 @@ def Get_Updated_Cube_Depth_First_Search_Tree(cube_search_tree):
     
     return updated_cube_search_tree
 
+#Functions updates the cube using breadth first search
 def Get_Updated_Cube_Breadth_First_Search_Tree(cube_search_tree):
     updated_cube_search_tree = cube_search_tree
     
@@ -105,6 +114,7 @@ def Get_Updated_Cube_Bidirectional_Search_Tree(scrambled_cube_search_tree, defau
     
     return updated_scrambled_cube_search_tree, updated_default_cube_search_tree
 
+#Function traces the cube through breadth first search
 def Trace_Rubiks_Cube_Depth_First_Search(scrambled_cube_with_turns_executed = None):
     print("Depth First Search:")
     start_time = time.time()
@@ -180,3 +190,5 @@ def Trace_Performance_Comparison_Search_Algorithms():
     bfs_path_cost, bfs_execution_time = Trace_Rubiks_Cube_Breadth_First_Search(scrambled_cube_with_turns_executed.copy())
     bis_path_cost, bis_execution_time = Trace_Rubiks_Cube_Bidirectional_Search(scrambled_cube_with_turns_executed.copy())
     dfs_path_cost, dfs_execution_time = Trace_Rubiks_Cube_Depth_First_Search(scrambled_cube_with_turns_executed.copy())
+
+Trace_Performance_Comparison_Search_Algorithms()

@@ -1,5 +1,6 @@
 import random
 
+#Function to get a default (preset) cube
 def Get_Default_Cube():
     default_cube = {"TOP" : None,
                     "BOTTOM" : None,
@@ -7,27 +8,31 @@ def Get_Default_Cube():
                     "RIGHT" : None,
                     "FRONT" : None,
                     "BACK" : None}
-    default_cube_colors = Get_Default_Cube_Colors()
+    default_cube_colors = Get_Default_Cube_Colors() #Gets colors of the cubes and set it in the preset cube
     default_cube_color_index = 0
-    
+    #making the cube, setting the colors to the each side
     for cube_side in default_cube.keys():
         default_cube[cube_side] = Get_Colored_Cube_Side(default_cube_colors[default_cube_color_index])
         default_cube_color_index = default_cube_color_index + 1
         
     return default_cube
 
+#This function is to print the sides of the cube
 def Print_Cube_Side(cube_side, cube):
     cube_sides = cube.keys()
+    #if else statement to make sure the cube side is in the cube, if not then it will give an error
     if cube_side not in cube_sides:
-        raise IndexError("Cube side given (" + cube_side + ") does not exist in cube! Valid cube sides are " + cube_sides + ".")
+        raise IndexError("Cube side given (" + cube_side + ") does not exist in cube! Valid cube sides are " + cube_sides + ".") #makes sure statements are true if the object (first argument) is an instance or subclass of classinfo class (second argument)
     else:
         if isinstance(cube_side, list):
             for row in cube[cube_side]:
-                print("".join(row))
+                print("".join(row)) #joining the list with the row with empty separators and print
         elif isinstance(cube_side, str):
             print(cube_side)
 
+#function prints the cube
 def Print_Cube(cube):
+    #organizing the cube 
     cube_string_rows = []
     cube_string_rows.append(" "*9 + "".join(cube["TOP"][0]))
     cube_string_rows.append(" "*9 + "".join(cube["TOP"][1]))
@@ -43,7 +48,8 @@ def Print_Cube(cube):
     
     for cube_string_row in cube_string_rows:
         print(cube_string_row)
-    
+
+#Function gives the cube colors
 def Get_Default_Cube_Colors():
     default_colors = []
     color = {"NAME" : None,
@@ -60,20 +66,27 @@ def Get_Default_Cube_Colors():
         
     return default_colors
 
+#function makes the sides of the cubes 
 def Get_Blank_Cube_Side():
+    #assigns cube sides as blank
     blank_cube_side = """[][][]
                          [][][]
                          [][][]"""
     
     return blank_cube_side
 
+#Function gives the cube sides a color
 def Get_Colored_Cube_Side(color):
+    #assigning to empty arrays
     colored_cube_side = []
     colored_cube_side_table = []
+    #calling functions
     blank_cube_side = Get_Blank_Cube_Side()
     blank_cube_side_table = Get_Cube_Side_Table(blank_cube_side)
+    #going through each sides of the blank cube
     for blank_cube_row in blank_cube_side_table:
         colored_cube_row = []
+        ##goes through each blank side and assigns a color
         for blank_cube_block in blank_cube_row:
             colored_cube_block = blank_cube_block.replace("[]", str("[" + color["STR_ID"] + "]"))
             colored_cube_row.append(colored_cube_block)
@@ -82,6 +95,7 @@ def Get_Colored_Cube_Side(color):
     
     return colored_cube_side
 
+#function gives a blank cube
 def Get_Blank_Cube():
     blank_cube = {"TOP" : None,
                   "BOTTOM" : None,
@@ -89,12 +103,14 @@ def Get_Blank_Cube():
                   "RIGHT" : None,
                   "FRONT" : None,
                   "BACK" : None}
+    #calling function to get all blank cube
     blank_cube_side = Get_Blank_Cube_Side()
     for cube_side in blank_cube:
-        blank_cube[cube_side] = blank_cube_side
+        blank_cube[cube_side] = blank_cube_side #assigning blank sides to all cube sides
     
     return blank_cube
 
+#Function makes a table for the cube
 def Get_Cube_Side_Table(cube_side):
     cube_side_table = []
     cube_side_rows = cube_side.split("\n")
@@ -106,8 +122,10 @@ def Get_Cube_Side_Table(cube_side):
     
     return cube_side_table
 
+#Function gets the strings from the cube
 def Get_String_From_Cube(cube):
     string = ""
+    #going inside the cube to get to the string in the block on the cube
     for side in cube:
         for row in cube[side]:
             for block in row:
@@ -115,6 +133,7 @@ def Get_String_From_Cube(cube):
     
     return string
 
+##Function gets the cube from the strings 
 def Get_Cube_From_String(string):
     cube = {"TOP" : None,
             "BOTTOM" : None,
@@ -132,21 +151,28 @@ def Get_Cube_From_String(string):
     cube["BACK"] = [string_array[45:48]] + [string_array[48:51]] + [string_array[51:54]]
     
     return cube
-    
+
+##Function figures out if the cube has been completed
 def Is_Cube_Completed(cube):
     is_cube_completed = False
     
+    #checks to see if the cube has been completed, comparing the two functions
     if Get_String_From_Cube(cube) == Get_String_From_Cube(Get_Default_Cube()):
         is_cube_completed = True
     
     return is_cube_completed
 
+#Function gives a error if invalid parameters are given
 def Print_Invalid_Parameters_Message():
     print("Invalid parameters entered!")
 
+#Function shows the cube in a perspective view
 def Get_Cube_In_Perspective(cube, perspective):
+    ##assigning and calling function
     cube_in_perspective = Get_Blank_Cube()
+    ##assigning the different views as array
     perspectives = ["TOP", "BOTTOM", "LEFT", "RIGHT", "FRONT", "BACK"]
+    ##assigning the perspectives to the cube array
     if perspective.upper() in perspectives:
         if perspective.upper() == "TOP":
             cube_in_perspective["TOP"] = cube["BACK"]
@@ -228,6 +254,7 @@ def Get_Rotated_Cube(cube, what_to_rotate, what_to_rotate_index, rotation_direct
     rotation_directions = []
     rotation_perspectives = ["TOP", "BOTTOM", "LEFT", "RIGHT", "FRONT", "BACK"]
     
+    #comparing to determine which way the cube should rotate
     if what_to_rotate.upper() == "ROW":
         rotation_directions = ["LEFT", "RIGHT"]
     elif what_to_rotate.upper() == "COLUMN":
@@ -397,27 +424,33 @@ def Get_Rotated_Cube(cube, what_to_rotate, what_to_rotate_index, rotation_direct
     
     return rotated_cube
 
+#Function gives a list of the turns
 def Get_Rubiks_Cube_Face_Turn_List():
     face_turn_list = ["U", "R", "F", "D", "L", "B"]
     
     return face_turn_list
 
+#Function gives list for if there is to be a double turn
 def Get_Rubiks_Cube_Double_Layer_Turn_List():
     double_layer_turn_list = ["u", "r", "f", "d", "l", "b"]
     
     return double_layer_turn_list
 
+#Function for the middle of the cube to be turned
 def Get_Rubiks_Cube_Middle_Layer_Turn_List():
     middle_layer_turn_list = ["M", "E", "S"]
     
     return middle_layer_turn_list
 
+#Function to get the turns for the cube
 def Get_Rubiks_Cube_Turns_List():
-    rubiks_cube_turns_list = []
+    rubiks_cube_turns_list = [] # assign to empty array
+    #assign and call functions
     face_turn_list = Get_Rubiks_Cube_Face_Turn_List()
     double_layer_turn_list = Get_Rubiks_Cube_Double_Layer_Turn_List()
     middle_layer_turn_list = Get_Rubiks_Cube_Middle_Layer_Turn_List()
     
+    #making a list for the turning the cube
     for turn_list in [face_turn_list, double_layer_turn_list, middle_layer_turn_list]:
         for turn in turn_list:
             rubiks_cube_turns_list.append(turn)
@@ -427,13 +460,14 @@ def Get_Rubiks_Cube_Turns_List():
             
     return rubiks_cube_turns_list
 
+#Function to scramble the cube
 def Get_Scrambled_Cube(cube, num_turns):
     scrambled_cube = {"CUBE" : cube.copy(),
                       "TURNS_EXECUTED" : []}
     cube_turns_list = Get_Rubiks_Cube_Turns_List()
     num_turns_executed = 0
     while num_turns_executed < num_turns:
-        random_turn_index = random.randint(0, len(cube_turns_list) - 1)
+        random_turn_index = random.randint(0, len(cube_turns_list) - 1) #turn the cube randomly, using the turn list
         turn = cube_turns_list[random_turn_index]
         scrambled_cube["CUBE"] = Get_Rotated_Cube_Using_Notation(scrambled_cube["CUBE"], turn)
         scrambled_cube["TURNS_EXECUTED"].append(turn)
@@ -441,6 +475,7 @@ def Get_Scrambled_Cube(cube, num_turns):
     
     return scrambled_cube
 
+#Function to unscramble the cube
 def Get_Unscrambled_Cube_Using_Turns_Executed_List(scrambled_cube, turns_executed_list):
     unscrambled_cube = None
     cube = scrambled_cube.copy()
@@ -457,6 +492,7 @@ def Get_Unscrambled_Cube_Using_Turns_Executed_List(scrambled_cube, turns_execute
     
     return unscrambled_cube
 
+#Function gets the cube after the turns have been executed
 def Get_Cube_With_Turns_Executed(cube, turns_list):
     cube_with_turns_executed = cube.copy()
     for turn in turns_list:
@@ -464,6 +500,7 @@ def Get_Cube_With_Turns_Executed(cube, turns_list):
     
     return cube_with_turns_executed
 
+#Function rotates the turn lists
 def Get_Rotated_Cube_Using_Notation(cube, move):
     rotated_cube = cube.copy()
     if move in Get_Rubiks_Cube_Turns_List():
